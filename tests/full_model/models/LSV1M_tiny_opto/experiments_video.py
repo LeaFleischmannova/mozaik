@@ -5,6 +5,7 @@ from parameters import ParameterSet
 def create_experiments(model):
     experiments = []
     experiments.append(
+        NoStimulation(model, ParameterSet({"duration": 105}))
         SingleOptogeneticArrayStimulus(
             model,
             MozaikExtendedParameterSet(
