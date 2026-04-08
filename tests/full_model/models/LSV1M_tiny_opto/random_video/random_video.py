@@ -1,6 +1,7 @@
 import numpy as np
 import os
 
+print("hey")
 x = 400
 y = 400
 duration = 1000

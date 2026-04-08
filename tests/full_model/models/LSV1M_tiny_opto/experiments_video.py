@@ -1,11 +1,15 @@
 from mozaik.experiments.optogenetic import SingleOptogeneticArrayStimulus
 from mozaik.tools.distribution_parametrization import MozaikExtendedParameterSet
 from parameters import ParameterSet
+import os
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+VIDEO_PATH = os.path.join(HERE, "random_video", "random_opto_video_1s.npy")
 
 def create_experiments(model):
     experiments = []
     experiments.append(
-        NoStimulation(model, ParameterSet({"duration": 105}))
+        NoStimulation(model, ParameterSet({"duration": 105})),
         SingleOptogeneticArrayStimulus(
             model,
             MozaikExtendedParameterSet(
@@ -22,7 +26,7 @@ def create_experiments(model):
                         "stimulating_signal_function_parameters": ParameterSet(
                             {
                                 "shape": "video",
-                                "video_path": "/home/Lea/Skola/bakalarka/mozaik-packages/mozaik/tests/full_model/models/LSV1M_tiny_opto/random_video/random_opto_video_1s.npy",
+                                "video_path": VIDEO_PATH,
                                 "intensity": 10,
                                 "duration": 1000,
                                 "onset_time": 0,
