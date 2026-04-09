@@ -1121,7 +1121,7 @@ def video_stim(coor_x, coor_y, parameters, stim_length):
     file containing a 3D numpy array, with values between 0 (black) and 1 (white).
 
     The mapping between the axes of the numpy array and cortical space
-    is 0->X, 1->Y, 2->time.
+    is 0->time, 1->X, 2->Y.
 
     If the video has a different aspect ratio or number of pixels as the stimulation
     array, it will be stretched to fit the array.
@@ -1137,8 +1137,10 @@ def video_stim(coor_x, coor_y, parameters, stim_length):
     parameters : ParameterSet
         intensity : float
                 Stimulation intensity constant
+
         video_path : str
                 Path to the .npy file containing the video (3D array)
+
     stim_length : int
                 Number of time steps of the stimulation
     """
@@ -1151,6 +1153,8 @@ def video_stim(coor_x, coor_y, parameters, stim_length):
 
     assert len(A.shape) == 3, "The video must be 3D! Instead, the video shape is: %s" % (A.shape)
     assert np.all(A >= 0) and np.all(A <= 1), "All values in the video must be in the range of (0,1)!"
+
+    A = np.transpose(A, (1, 2, 0))
 
     n_frames = A.shape[2]
     A_interp = np.zeros((coor_x.shape[0], coor_x.shape[1], n_frames))
