@@ -4,7 +4,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 from model import SelfSustainedPushPull
-from experiments import create_experiments
+from experiments_video import create_experiments
 import mozaik
 from mozaik.controller import run_workflow
 from mpi4py import MPI

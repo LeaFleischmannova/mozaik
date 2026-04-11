@@ -1,5 +1,6 @@
 from mozaik.experiments.optogenetic import SingleOptogeneticArrayStimulus
 from mozaik.tools.distribution_parametrization import MozaikExtendedParameterSet
+from mozaik.experiments import NoStimulation
 from parameters import ParameterSet
 import os
 
@@ -9,7 +10,8 @@ VIDEO_PATH = os.path.join(HERE, "random_video", "random_opto_video_1s.npy")
 def create_experiments(model):
     experiments = []
     experiments.append(
-        NoStimulation(model, ParameterSet({"duration": 105})),
+        NoStimulation(model, ParameterSet({"duration": 140})))
+    experiments.append(
         SingleOptogeneticArrayStimulus(
             model,
             MozaikExtendedParameterSet(
