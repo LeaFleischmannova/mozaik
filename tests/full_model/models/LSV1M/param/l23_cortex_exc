@@ -1,7 +1,7 @@
 {
     #CorticalUniformSheet parameters
     
-    'component': 'mozaik.sheets.vision.VisualCorticalUniformSheet',
+    'component': 'mozaik.sheets.vision.VisualCorticalUniformSheet3D',
     
     'params':{
                 'name':'V1_Exc_L2/3',
