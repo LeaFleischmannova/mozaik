@@ -43,7 +43,7 @@
                         'stimulator_array':  {
                         'component' :  'mozaik.sheets.direct_stimulator.PluginOpticalStimulatorArrayChR',   
                         'params' : {
-                            "size": 1000,
+                            "size": 4000,
                             "spacing": 10,
                             "depth_sampling_step": 10,
                             "light_source_light_propagation_data": "light_scattering_radial_profiles_lsd10.pickle",
