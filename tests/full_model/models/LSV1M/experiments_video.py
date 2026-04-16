@@ -4,13 +4,17 @@ from mozaik.experiments import NoStimulation
 from parameters import ParameterSet
 import os
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-VIDEO_PATH = os.path.join(HERE, "random_video", "random_opto_video_1s.npy")
 
 def create_experiments(model):
+    video_path = os.environ.get("VIDEO_PATH")
+    if video_path is None:
+        raise ValueError("VIDEO_PATH is not set")
+
     experiments = []
+
     experiments.append(
         NoStimulation(model, ParameterSet({"duration": 140})))
+
     experiments.append(
         SingleOptogeneticArrayStimulus(
             model,
@@ -28,11 +32,11 @@ def create_experiments(model):
                         "stimulating_signal_function_parameters": ParameterSet(
                             {
                                 "shape": "video",
-                                "video_path": VIDEO_PATH,
+                                "video_path": video_path,
                                 "intensity": 10,
-                                "duration": 1000,
+                                "duration": 2002,
                                 "onset_time": 0,
-                                "offset_time": 1000,
+                                "offset_time": 2002,
                             }
                         )
                     }

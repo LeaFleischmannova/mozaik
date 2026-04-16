@@ -192,7 +192,18 @@ class ParameterSearch(object):
         run_script, simulator_name, parameters_url = parse_parameter_search_args()
         
         timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
-        mdn = timestamp + "[" + parameters_url.replace('/','.') + "]" +  self.master_directory_name()
+        # mdn = timestamp + "[" + parameters_url.replace('/','.') + "]" +  self.master_directory_name()
+        video_name = os.environ.get("VIDEO_NAME", "unknown")
+        mdn = (
+            timestamp
+            + "["
+            + parameters_url.replace('/', '.')
+            + "]"
+            + self.master_directory_name().rstrip('/')
+            + "_video_"
+            + video_name
+            + "/"
+        )
         os.mkdir(mdn)
         
         counter=0
