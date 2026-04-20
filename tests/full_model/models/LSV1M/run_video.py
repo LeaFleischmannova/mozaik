@@ -9,6 +9,9 @@ import mozaik
 from mozaik.controller import run_workflow
 from mpi4py import MPI
 
+import nest
+nest.Install("stepcurrentmodule")
+
 mpi_comm = MPI.COMM_WORLD
 
 data_store, model = run_workflow("LSV1M", SelfSustainedPushPull, create_experiments)

@@ -3,7 +3,7 @@
     'component': 'mozaik.sheets.vision.VisualCorticalUniformSheet',
     'params':{
                 'name':'V1_Exc_L4',
-                'sx':3000.0,
+                'sx':5000.0,
                 'sy':ref('sheets.l4_cortex_exc.params.sx'),
                 'density': 1500.0,
                 'mpi_safe' : False,    
@@ -21,16 +21,16 @@
                             'cm': 0.032,
             	            'e_rev_E': 0.0,
                             'e_rev_I': -80.0,
-                    	    'tau_syn_E': 1.5 * ref('sheets.l4_cortex_exc.syn_tau_scaler'),
-                            'tau_syn_I': 4.2 * ref('sheets.l4_cortex_exc.syn_tau_scaler'),
+                    	    'tau_syn_E': 1.5,
+                            'tau_syn_I': 4.2,
                             'a' : -0.8,
                             'b' : 0.08,
                             'delta_T' : 0.8,
                             'tau_w' : 1.0,
-                            'v_thresh' : -56.0                            
+                            'v_thresh' : -57.0                            
                         },
-                        'receptors':None,
-                        'initial_values': {
+                       'receptors':None,
+                       'initial_values': {
                                     'v': PyNNDistribution(name='uniform',low=-70,high=-51),
                                 },
 
@@ -43,9 +43,6 @@
     'K' : 1000, # Number of synapses per neuron
     'feedback_conn_ratio' : 0.2,
     'inhibitory_connection_ratio' : 0.6, # The fraction of connections that are onto inhibitory neurons compared to excitatory
-    'syn_tau_scaler' : 1.0,
-    'syn_weight_scaler' : 0.7,
-    'delay_inc' : 0,
 
     'L4ExcL4ExcConnection': {
         'target_synapses' : 'excitatory',             
@@ -75,23 +72,31 @@
                                 'd1' : {
                                          'component' : 'mozaik.connectors.modular_connector_functions.LinearModularConnectorFunction',
                                          'params' : {
-                                                        'constant_scaler': 1.4 + ref('sheets.l4_cortex_exc.delay_inc'),
+                                                        'constant_scaler': 1.4,
                                                         'linear_scaler': 0.0033333333,   
                                                     }
                                        }, 
         
                             },
+        'num_samples_functions' : {
+                                'n1' : {
+                                         'component' : 'mozaik.connectors.modular_connector_functions.ThresholdExponentialModularNumSamplesConnectorFunction',
+                                         'params' : {
+                                                        'threshold': 0.1,
+                                                        'max_decrease': 2,
+                                                        'exponent_factor': 3,
+                                                    }
+                                       },
+                            },
         'weight_expression' : 'f1*f2',
         'delay_expression' : 'd1',
-        'num_samples_functions' : None,
         'num_samples_expression' : '',
-
-        'base_weight': 0.00016,
+        'base_weight': 0.00018,
 	'annotation_reference_name' : 'aff_samples',
-        'samples_coeff': 1,
-        'num_samples' : ref('sheets.l4_cortex_exc.K')*4.0/5.0*(1-ref('sheets.l4_cortex_exc.feedback_conn_ratio')),
+		'samples_coeff': 1,
         'self_connections': True,
-        'local_module': None,
+        'num_samples' : ref('sheets.l4_cortex_exc.K')*4.0/5.0*(1-ref('sheets.l4_cortex_exc.feedback_conn_ratio')),
+            'local_module': None,
 },
     
     
@@ -120,31 +125,30 @@
                                 'd1' : {
                                          'component' : 'mozaik.connectors.modular_connector_functions.LinearModularConnectorFunction',
                                          'params' : {
-                                                        'constant_scaler': 0.5 + ref('sheets.l4_cortex_exc.delay_inc'),
+                                                        'constant_scaler': 0.5,
                                                         'linear_scaler': ref('sheets.l4_cortex_exc.L4ExcL4ExcConnection.delay_functions.d1.params.linear_scaler'),   
                                                     }
                                        }, 
         
                             },
 
+        'num_samples_functions' : ref('sheets.l4_cortex_exc.L4ExcL4ExcConnection.num_samples_functions'),
         'weight_expression' : ref('sheets.l4_cortex_exc.L4ExcL4ExcConnection.weight_expression'),
         'delay_expression' : ref('sheets.l4_cortex_exc.L4ExcL4ExcConnection.delay_expression'),
-        'num_samples_functions' : ref('sheets.l4_cortex_exc.L4ExcL4ExcConnection.num_samples_functions'),
-        'num_samples_expression' : ref('sheets.l4_cortex_exc.L4ExcL4ExcConnection.num_samples_expression'),
-
         'base_weight': 0.00022,
+        'num_samples_expression' : ref('sheets.l4_cortex_exc.L4ExcL4ExcConnection.num_samples_expression'),
 	'annotation_reference_name' : 'aff_samples',
-        'samples_coeff': 1,
+		'samples_coeff': 1,
         'num_samples' : ref('sheets.l4_cortex_exc.L4ExcL4ExcConnection.num_samples') * ref('sheets.l4_cortex_exc.inhibitory_connection_ratio'),
         'self_connections': ref('sheets.l4_cortex_exc.L4ExcL4ExcConnection.self_connections'),
         'local_module': None,
     },
 
-    'AfferentMean' : 40,      
+    'AfferentMean' : 70,      
     'AfferentVar' : 25,
 
     'AfferentConnection': {
-        'target_synapses': 'excitatory',
+		'target_synapses': 'excitatory',
         'aspect_ratio':            0.4,
         'size':                    0.17,
         'orientation_preference':  PyNNDistribution(name='uniform',low=0,high=3.141592653589793),
@@ -160,35 +164,36 @@
                                                 }
                                 }
                             },
+        'num_samples_functions' : None,
+        'num_samples_expression' : '',
         'topological' : True,
-	
+	    
         'or_map' : True,
-	'or_map_location' : './or_map_new_6x6',
-	'or_map_stretch' : 1,
+        'or_map_location' : './or_map_new_16x16',
+        'or_map_stretch' : 3.35,
         'phase_map' : False,
         'phase_map_location' : './phase_map',
-	'rf_jitter' : 0,
-	'off_bias' : 1.0,
-        'gauss_coefficient' : 0.1,
-        'base_weight' : 0.0016,
-        'num_samples' : {
-                 'class_name': 'PyNNDistribution',
-                 'params': {
-                         'name': 'uniform',
-                         'low': ref('sheets.l4_cortex_exc.AfferentMean') - ref('sheets.l4_cortex_exc.AfferentVar'),
-                         'high': ref('sheets.l4_cortex_exc.AfferentMean') + ref('sheets.l4_cortex_exc.AfferentVar'),
-                     },
-             },
-        'num_samples_functions' : ref('sheets.l4_cortex_exc.L4ExcL4ExcConnection.num_samples_functions'),
-        'num_samples_expression' : ref('sheets.l4_cortex_exc.L4ExcL4ExcConnection.num_samples_expression'),
+        'rf_jitter' : 0,
+        'off_bias' : 1.0,
+        'gauss_coefficient' : 0.085,
 
+        'base_weight' : 0.0012,
+        'num_samples' : {
+             'class_name': 'PyNNDistribution',
+             'params': {
+                     'name': 'uniform',
+                     'low': ref('sheets.l4_cortex_exc.AfferentMean') - ref('sheets.l4_cortex_exc.AfferentVar'),
+                     'high': ref('sheets.l4_cortex_exc.AfferentMean') + ref('sheets.l4_cortex_exc.AfferentVar'),
+                 },
+         },
         'short_term_plasticity': {
-	    		            'U': 0.75, 
-	    		            'tau_rec': 100.0, 
-	     	                'tau_psc': 3.0,
-	    		            'tau_fac': 0.0,
-                    },
+				        'U': 0.75, 
+				        'tau_rec': 125.0, 
+	 		                'tau_psc': 3.0,
+				        'tau_fac': 0.0,
+                        },
+
 
         'local_module': None,
     }        
-}
+}        
